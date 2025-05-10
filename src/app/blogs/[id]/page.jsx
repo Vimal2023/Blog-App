@@ -4,17 +4,24 @@ import { assets, blog_data } from "../../../../Assests/assets";
 import Image from "next/image";
 import Footer from "../../../../Components/Footer";
 import Link from "next/link";
+import axios from "axios";
 
 const page = ({ params }) => {
   const [data, setData] = useState(null);
 
-  const fetchBlogData = () => {
-    for (let i = 0; i < blog_data.length; i++) {
-      if (Number(params.id) === blog_data[i].id) {
-        setData(blog_data[i]);
-        break;
-      }
-    }
+  const fetchBlogData = async () => {
+    // for (let i = 0; i < blog_data.length; i++) {
+    //   if (Number(params.id) === blog_data[i].id) {
+    //     setData(blog_data[i]);
+    //     break;
+    //   }
+    // }
+    const response = await axios.get("/api/blog", {
+      params: {
+        id: params.id,
+      },
+    });
+    setData(response.data);
   };
 
   useEffect(() => {
@@ -39,7 +46,7 @@ const page = ({ params }) => {
             {data.title}
           </h1>
           <Image
-            src={data.author_img}
+            src={data.authorImg}
             width={60}
             height={60}
             alt=""
@@ -51,14 +58,14 @@ const page = ({ params }) => {
         </div>
       </div>
       <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
-        <Link href='/'>
-        <Image
-          src={data.image}
-          width={1280}
-          height={720}
-          alt=""
-          className="border-4 border-white"
-        />
+        <Link href="/">
+          <Image
+            src={data.image}
+            width={1280}
+            height={720}
+            alt=""
+            className="border-4 border-white"
+          />
         </Link>
         <h1 className="my-8 text-[26px] font-semibold">Introduction:</h1>
         <p>{data.description}</p>
@@ -110,15 +117,17 @@ const page = ({ params }) => {
           boosts both physical and mental well-being.
         </p>
         <div className="my-24">
-            <p className="text-black font font-semibold my-4">Share this article on social media</p>
-            <div className="flex">
-                <Image src={assets.facebook_icon} width={50} alt=''/>
-                <Image src={assets.googleplus_icon} width={50} alt=''/>
-                <Image src={assets.twitter_icon} width={50} alt=''/>
-            </div>
+          <p className="text-black font font-semibold my-4">
+            Share this article on social media
+          </p>
+          <div className="flex">
+            <Image src={assets.facebook_icon} width={50} alt="" />
+            <Image src={assets.googleplus_icon} width={50} alt="" />
+            <Image src={assets.twitter_icon} width={50} alt="" />
+          </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   ) : (
     <></>

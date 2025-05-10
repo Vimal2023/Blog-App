@@ -1,37 +1,47 @@
 const { NextResponse } = require("next/server");
 import connectDB from "@/lib/config/db";
-import {writeFile} from "fs/promises";
+import { writeFile } from "fs/promises";
 
-const LoadDB =async () => {
-    await connectDB();
-}
+const LoadDB = async () => {
+  await connectDB();
+};
 
 LoadDB();
+
+// API Endpoint to get all blogs
 async function GET(request) {
-    return NextResponse.json({msg:"Hello from blog API"})
+  const blogId = request.nextUrl.searchParams.get("id");
+  if (blogId) {
+    const blog = await BlogModel.findById(blogId);
+    return NextResponse.json({ blog });
+  } else {
+    const blogs = await BlogModel.find({});
+    return NextResponse.json({ blogs });
+  }
 }
 
+// API Endpoint to create a new blog
 export async function POST(request) {
-    const formData = await request.formData();
-    const timestamp = Date.now();
+  const formData = await request.formData();
+  const timestamp = Date.now();
 
-    const image = formData.get("image");
-    const imageByteData = await image.arrayBuffer();
-    const buffer = Buffer.from(imageByteData);
-    const path = `./public/${timestamp}-${image.name}`;
-    await writeFile(path, buffer);
-    const imgUrl = `/${timestamp}-${image.name}`;
+  const image = formData.get("image");
+  const imageByteData = await image.arrayBuffer();
+  const buffer = Buffer.from(imageByteData);
+  const path = `./public/${timestamp}-${image.name}`;
+  await writeFile(path, buffer);
+  const imgUrl = `/${timestamp}-${image.name}`;
 
-    const blogData = {
-        title: `${formData.get("title")}`,
-        description: `${formData.get("description")}`,
-        category: `${formData.get("category")}`,
-        author: `${formData.get("author")}`,
-        image:`${imgUrl}`,
-        authorImg: `${formData.get("authorImg")}`,
-    }
+  const blogData = {
+    title: `${formData.get("title")}`,
+    description: `${formData.get("description")}`,
+    category: `${formData.get("category")}`,
+    author: `${formData.get("author")}`,
+    image: `${imgUrl}`,
+    authorImg: `${formData.get("authorImg")}`,
+  };
 
-    await BlogModel.create(blogData);
+  await BlogModel.create(blogData);
 
-    return NextResponse.json({success:true, msg:"Blog Created Successfully"});
+  return NextResponse.json({ success: true, msg: "Blog Created Successfully" });
 }
