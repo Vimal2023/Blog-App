@@ -58,18 +58,17 @@ const page = ({ params }) => {
         </div>
       </div>
       <div className="mx-5 max-w-[800px] md:mx-auto mt-[-100px] mb-10">
-        <Link href="/">
-          <Image
-            src={data.image}
-            width={1280}
-            height={720}
-            alt=""
-            className="border-4 border-white"
-          />
-        </Link>
-        <h1 className="my-8 text-[26px] font-semibold">Introduction:</h1>
-        <p>{data.description}</p>
-        <h3 className="my-5 text-[18px] font-semibold">
+        <Image
+          src={data.image}
+          width={1280}
+          height={720}
+          alt=""
+          className="border-4 border-white"
+        />
+
+        {/* <h1 className="my-8 text-[26px] font-semibold">Introduction:</h1> */}
+        {/* <p>{data.description}</p> */}
+        {/* <h3 className="my-5 text-[18px] font-semibold">
           {" "}
           Step1: Self-Reflection and Goal Setting
         </h3>
@@ -115,7 +114,14 @@ const page = ({ params }) => {
         <p className="my-3">
           Eat a balanced diet rich in fruits and vegetables. Regular exercise
           boosts both physical and mental well-being.
-        </p>
+        </p> */}
+        <div
+          className="blog-content"
+          dangerouslySetInnerHTML={{ __html: data.description }}
+        >
+          
+        </div>
+
         <div className="my-24">
           <p className="text-black font font-semibold my-4">
             Share this article on social media
