@@ -30,7 +30,7 @@ const page = () => {
     formData.append("author", data.author);
     formData.append("authorImg", data.authorImg);
     formData.append("image", image);
-    const response = await axios.post("/api/blogs", formData);
+    const response = await axios.post("/api/blog", formData);
     if (response.data.success) {
       toast(response.data.msg);
       setImage(false);
@@ -99,7 +99,7 @@ const page = () => {
           <option value="Lifesytle">Lifesytle</option>
         </select>
         <br />
-        <button type="submit" className="mt-8 w-40 h-12 bg-black text-white">
+        <button type="submit" className="mt-8 w-40 h-12 bg-black text-white cursor-pointer">
           ADD
         </button>
       </form>
